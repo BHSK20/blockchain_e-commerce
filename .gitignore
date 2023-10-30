@@ -2,7 +2,6 @@ venv
 *.env
 *public
 *.pyc
-lib
 build
 dist
 gw_mail.*
