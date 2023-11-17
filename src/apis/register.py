@@ -7,7 +7,7 @@ from src.helper.register import is_exists_email
 from src.helper.send_email import send_email
 from sqlalchemy import select, insert
 from src.schema.register import Register, VerifyAccount
-from src.tasks import task
+# from src.tasks import task
 from src.config import config
 from src.lib.exception import BadRequest
 from src.lib.authentication import JsonWebToken
