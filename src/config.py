@@ -19,4 +19,5 @@ class Config(BaseSettings):
     CELERY_RESULT_PERSISTENT:bool = True
     KEY_JWT: str
     ALGORITHM_HASH_TOKEN: str = "HS256"
+    BASE_URL_TOKEN: str
 config = Config()

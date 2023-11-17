@@ -26,10 +26,8 @@ async def check_password(email ,entered_password):
             return False, True
     else:
         return False, False
-def generate_hased_password(length):
-    password = generate_random_password(length)
-    # Generate a salt and hash the password
-    return password, bcrypt.hashpw(password.encode(), salt)
+def generate_hased_password(password):
+    return bcrypt.hashpw(password.encode(), salt)
 
 def hash_password(password):
     return bcrypt.hashpw(password.encode(), salt)
