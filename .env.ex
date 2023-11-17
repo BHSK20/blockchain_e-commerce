@@ -1,5 +1,5 @@
 POSTGRES_URI = "postgresql+asyncpg://root:root@localhost/blockchain-e-commerce"
-REDIS_URI = 'localhost'
+REDIS_URL = 'localhost'
 PORT = 6379
 
 KEY_JWT = 'e_commerce@!'

@@ -4,4 +4,5 @@ import redis
 db = Postgres(url=config.POSTGRES_URI)
 session = db._make_session() # using session execute query
 
-redis = redis.Redis(config.REDIS_URI)
+# redis = redis.Redis(config.REDIS_URI)
+redis = redis.Redis.from_url(config.REDIS_URL)
