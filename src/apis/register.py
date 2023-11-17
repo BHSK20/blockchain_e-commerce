@@ -44,7 +44,9 @@ class Register(HTTPEndpoint):
                                     algorithms=[config.ALGORITHM_HASH_TOKEN])
         str_data = _decode.get('payload')
         data = json.loads(str_data)
-        print(data)
+        # check if verified
+        if await is_exists_email(form_data['email']):
+            return 'already verified'
         stored_token = redis.get(data['email']).decode()
         if stored_token == token:
             await session.execute(
