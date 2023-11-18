@@ -37,6 +37,7 @@ class Login(HTTPEndpoint):
                                 where(Users.email == email).
                                 values(is_active = False))
                 await session.commit()
+                await session.close()
                 raise BadRequest(errors="Maximum login attempts exceeded. Account locked.")
             else:
                 raise BadRequest(errors="Wrong password")

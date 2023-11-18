@@ -54,6 +54,7 @@ class Register(HTTPEndpoint):
             values(email = data['email'], first_name = data['first_name'], last_name = data['last_name'], password = data['password'].encode())
             )
             await session.commit()
+            await session.close()
             return "success"
         else:
             raise BadRequest(errors="Token does not match")

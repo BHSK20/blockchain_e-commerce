@@ -17,6 +17,7 @@ def generate_random_password(length):
 async def check_password(email ,entered_password):
     result = await session.execute(select(Users).filter_by(**{'email':email}))
     list = result.fetchall()
+    session.close()
     if len(list):
         for item in list:
             hased_password = item[0].as_dict['password']
