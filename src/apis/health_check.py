@@ -3,10 +3,13 @@ from src.lib.executor import executor
 from src.connect import session
 from src.models.test import Test
 from sqlalchemy import select
-
+from src.lib.roles import Role
+from src.config import config
+from src.lib.authentication import JsonWebToken
+login_require = JsonWebToken(config.KEY_JWT, config.ALGORITHM_HASH_TOKEN)
 
 class HealthCheck(HTTPEndpoint):
 
-    @executor()
-    async def get(self):
+    @executor(login_require=login_require, allow_roles=Role.MERCHANT.value)
+    async def get(self, user):
         return "health check"

@@ -13,7 +13,7 @@ from src.lib.exception import BadRequest
 from src.lib.authentication import JsonWebToken
 import jwt, json
 from src.connect import redis
-
+from src.lib.roles import Role
 from sqlalchemy import select
 
 
@@ -49,9 +49,10 @@ class Register(HTTPEndpoint):
             return 'already verified'
         stored_token = redis.get(data['email']).decode()
         if stored_token == token:
+            print('ok')
             await session.execute(
             insert(Users).
-            values(email = data['email'], first_name = data['first_name'], last_name = data['last_name'], password = data['password'].encode())
+            values(email = data['email'], first_name = data['first_name'], last_name = 'USER', password = data['password'].encode(), role = Role.USER.value)
             )
             await session.commit()
             await session.close()
