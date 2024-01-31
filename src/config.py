@@ -8,6 +8,7 @@ class Config(BaseSettings):
     PROJECT_NAME: str = 'blockchain-e-commerce'
     POSTGRES_URI: str
     REDIS_URL: str
+    INFURA_API_KEY: str
     PORT: typing.Optional[int]
     # BROKER_URL: str
     CELERY_ROUTES: dict = {

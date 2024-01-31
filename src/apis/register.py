@@ -5,7 +5,7 @@ from src.models.user import Users
 from src.helper.encrypt_password import generate_hased_password
 from src.helper.register import is_exists_email
 from src.helper.send_email import send_email
-from sqlalchemy import select, insert
+from sqlalchemy import select, insert, update
 from src.schema.register import Register, VerifyAccount
 # from src.tasks import task
 from src.config import config
@@ -14,7 +14,7 @@ from src.lib.authentication import JsonWebToken
 import jwt, json
 from src.connect import redis
 from src.lib.roles import Role
-from sqlalchemy import select
+from src.helper.create_wallet import create_wallet
 
 
 class Register(HTTPEndpoint):
@@ -49,13 +49,27 @@ class Register(HTTPEndpoint):
             return 'already verified'
         stored_token = redis.get(data['email']).decode()
         if stored_token == token:
-            print('ok')
             await session.execute(
             insert(Users).
             values(email = data['email'], first_name = data['first_name'], last_name = 'USER', password = data['password'].encode(), role = Role.USER.value)
             )
             await session.commit()
             await session.close()
+            # create wallet
+            result = await session.execute(select(Users).filter_by(**{'email' : data['email']}))
+            result = result.fetchall()
+            item = result[0]
+            dict_item = item[0].as_dict
+            user_id = dict_item['id']
+            
+            public_key, private_key = create_wallet()
+            key = {'public_key': public_key, 'private_key': private_key}
+            await session.execute(
+            update(Users).
+            where(Users.id == user_id).
+            values(key = key)
+            )
+            
             return "success"
         else:
             raise BadRequest(errors="Token does not match")
