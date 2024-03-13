@@ -9,5 +9,5 @@ def create_wallet():
     account = Account.create()
     # Get the address and private key
     address = account.address
-    private_key = account.privateKey.hex()
+    private_key = account._private_key.hex()
     return address, private_key

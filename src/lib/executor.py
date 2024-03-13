@@ -17,6 +17,8 @@ def executor(
     query_params: Optional[Type[BaseModel]] = None,
     form_data: Optional[Type[BaseModel]] = None,
     path_params: Optional[Type[BaseModel]] = None,
+    header_data: Optional[Type[BaseModel]] = None,
+    
     trace_error: bool=True,
     allow_roles = ['ALL'],
 ):
@@ -35,6 +37,14 @@ def executor(
                 _request: Request = args[1]
                 _self = args[0]
 
+                if header_data:
+                    _header_data = _request.headers
+                    try:
+                        _header = header_data(**_header_data)
+                        _kwargs['header_data'] = json.loads(_header.model_dump_json())
+                    except Exception as e:
+                        raise BadRequest(errors=json.loads(e.json()))
+                    
                 if login_require:
                     _payload = login_require.validate(_request)
                     _kwargs['user'] = _payload

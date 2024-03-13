@@ -5,6 +5,7 @@ class Config(BaseSettings):
     class Config:
         env_file = ".env"
 
+    SECRET_KEY: str
     PROJECT_NAME: str = 'blockchain-e-commerce'
     POSTGRES_URI: str
     REDIS_URL: str

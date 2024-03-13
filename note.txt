@@ -1,0 +1,11 @@
+Pre con: nguoi dung da dang nhap, chon don hang can thanh toan
+1. Xem chi tiet don hang dang thanh toan
+2. Accept
+
+3. Thanh toan ngay: Co QR chua thong tin amount currency, address merchant, orderid
+4. Nguoi dung quet QR, chuyen den trang tranfer
+5. tranfer detail de nguoi dung kiem tra lai
+5.2 Neu nguoi dung chua dang nhap thi chuyen toi trang dang nhap
+
+-------------------------------------------------------
+1. 

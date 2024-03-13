@@ -2,6 +2,8 @@ from starlette.endpoints import HTTPEndpoint
 from src.lib.executor import executor
 from src.connect import session
 from src.models.user import Users
+from src.models.wallet import Wallet
+
 from src.helper.encrypt_password import generate_hased_password
 from src.helper.register import is_exists_email
 from src.helper.send_email import send_email
@@ -34,7 +36,27 @@ class Register(HTTPEndpoint):
         redis.set(form_data['email'], token)
         message = 'Your account has been create successfully, please click the link to verify your account: {}?token={}'.format(config.BASE_URL_TOKEN,token)
         # task.send_task('worker.send_mail', ("customer_email", form_data['email'], message), queue = 'send_mail')
-        send_email(form_data['email'], subject='Your account has been created', message=message)
+        
+        ## register not email, update needed
+        await session.execute(
+            insert(Users).
+            values(email = data['email'], first_name = data['first_name'], last_name = 'USER', password = data['password'].encode(), role = Role.USER.value)
+            )
+        await session.commit()
+        await session.close()
+        # create wallet
+        result = await session.execute(select(Users).filter_by(**{'email' : data['email']}))
+        result = result.fetchall()
+        item = result[0]
+        dict_item = item[0].as_dict
+        user_id = dict_item['id']
+        
+        public_key, private_key = create_wallet()
+        key = {'public_key': public_key, 'private_key': private_key}
+        result = await session.execute(insert(Wallet).values(**{'userId' : user_id, 'key' : key}))
+        await session.commit()
+        await session.close()
+        # send_email(form_data['email'], subject='Your account has been created', message=message)
         return "success"
 
     @executor(query_params=VerifyAccount)
@@ -45,8 +67,8 @@ class Register(HTTPEndpoint):
         str_data = _decode.get('payload')
         data = json.loads(str_data)
         # check if verified
-        if await is_exists_email(data['email']):
-            return 'already verified'
+        # if await is_exists_email(data['email']):
+        #     return 'already verified'
         stored_token = redis.get(data['email']).decode()
         if stored_token == token:
             await session.execute(
@@ -64,12 +86,10 @@ class Register(HTTPEndpoint):
             
             public_key, private_key = create_wallet()
             key = {'public_key': public_key, 'private_key': private_key}
-            await session.execute(
-            update(Users).
-            where(Users.id == user_id).
-            values(key = key)
-            )
-            
+            result = await session.execute(insert(Wallet).values(**{'userId' : user_id, 'key' : key}))
+            await session.commit()
+            await session.close()
+
             return "success"
         else:
             raise BadRequest(errors="Token does not match")
