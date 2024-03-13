@@ -21,10 +21,10 @@ eth-account==0.10.0
 eth-hash==0.5.2
 eth-keyfile==0.6.1
 eth-keys==0.4.0
-eth-rlp==1.0.1
-eth-typing==4.0.0
-eth-utils==4.0.0
-eth_abi==5.0.0
+eth-rlp==0.3.1
+eth-typing==3.0.0
+eth-utils==3.0.0
+eth_abi==4.0.0
 fastapi==0.100.0
 greenlet==2.0.2
 gunicorn==20.1.0
