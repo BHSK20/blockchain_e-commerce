@@ -38,7 +38,7 @@ class CreateOrder(HTTPEndpoint):
         }
         print('ok')
         try:
-            response = await requests.post('https://on-shop-blockchain.onrender.com', json=data, headers=headers, timeout=100)
+            response = await requests.post('https://on-shop-blockchain.onrender.com/create_order', json=data, headers=headers, timeout=100)
             # response = requests.get("https://scrapingbee.com/",timeout=30)
             print('2')
             # Check if the request was successful
