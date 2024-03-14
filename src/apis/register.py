@@ -30,7 +30,7 @@ class Register(HTTPEndpoint):
         form_data['password'] = b_pasword
         # send email notification
         register_token = JsonWebToken(config.KEY_JWT, config.ALGORITHM_HASH_TOKEN)
-        data = json.dumps({'email':form_data['email'], 'first_name': form_data['first_name'], 'last_name':form_data['last_name'], 'password': b_pasword.decode('utf-8')})
+        data = json.dumps({'email':form_data['email'], 'name': form_data['name'], 'last_name':form_data['last_name'], 'password': b_pasword.decode('utf-8')})
         temp = register_token.create_token(payload_data=data)
         token = temp.get('token')
         redis.set(form_data['email'], token)
@@ -40,7 +40,7 @@ class Register(HTTPEndpoint):
         ## register not email, update needed
         await session.execute(
             insert(Users).
-            values(email = data['email'], first_name = data['first_name'], last_name = 'USER', password = data['password'].encode(), role = Role.USER.value)
+            values(email = data['email'], name = data['name'], password = data['password'].encode(), role = Role.USER.value)
             )
         await session.commit()
         await session.close()
@@ -73,7 +73,7 @@ class Register(HTTPEndpoint):
         if stored_token == token:
             await session.execute(
             insert(Users).
-            values(email = data['email'], first_name = data['first_name'], last_name = 'USER', password = data['password'].encode(), role = Role.USER.value)
+            values(email = data['email'], name=data['name'], password = data['password'].encode(), role = Role.USER.value)
             )
             await session.commit()
             await session.close()
