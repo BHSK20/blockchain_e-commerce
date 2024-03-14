@@ -36,7 +36,7 @@ class CreateOrder(HTTPEndpoint):
             'sign': sign
         }
         try:
-            response = await requests.post('https://on-shop-blockchain.onrender.com/get_order_input', json=data, headers=headers, timeout=100)
+            response = await requests.post('https://on-shop-blockchain.onrender.com/get_order_input', json=data, headers=headers, timeout=40)
             # response = requests.get("https://scrapingbee.com/",timeout=30)
             # Check if the request was successful
             if response.status_code == 200:
