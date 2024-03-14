@@ -3,6 +3,7 @@ import json
 import base64
 import secrets
 
+import aiohttp
 import requests
 import json
 from starlette.endpoints import HTTPEndpoint
@@ -36,17 +37,17 @@ class CreateOrder(HTTPEndpoint):
             'sign': sign
         }
         try:
-            response = await requests.post('https://on-shop-blockchain.onrender.com/get_order_input', json=data, headers=headers, timeout=40)
-            # response = requests.get("https://scrapingbee.com/",timeout=30)
-            # Check if the request was successful
-            if response.status_code == 200:
-                return str(response.content)
-            else:
-                # Handle unsuccessful response
-                print(f"Error: Received status code {response.status_code}")
-                return None
+            async with aiohttp.ClientSession() as session:
+                async with session.post('https://on-shop-blockchain.onrender.com/get_order_input', json=data, headers=headers, timeout=40) as response:
+                    # Check if the request was successful
+                    if response.status == 200:
+                        text = await response.json()
+                        return text
+                    else:
+                        # Handle unsuccessful response
+                        print(f"Error: Received status code {response.status}")
+                        return None
         except Exception as e:
             # Handle exceptions that may occur during the request
-            print(f"An error occurred: {e}")
+            print(f"Error: {str(e)}")
             return None
-
