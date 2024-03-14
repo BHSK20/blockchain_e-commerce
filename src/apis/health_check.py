@@ -10,6 +10,6 @@ login_require = JsonWebToken(config.KEY_JWT, config.ALGORITHM_HASH_TOKEN)
 
 class HealthCheck(HTTPEndpoint):
 
-    @executor(login_require=login_require, allow_roles=Role.MERCHANT.value)
-    async def get(self, user):
+    @executor(login_require=login_require)
+    async def get(self):
         return "health check"
