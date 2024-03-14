@@ -9,7 +9,7 @@ import json
 from starlette.endpoints import HTTPEndpoint
 from src.lib.executor import executor
 from src.connect import session
-from src.schema.checkout import Checkout
+from src.schema.checkout import GetOrder
 from src.schema.header import Header
 from sqlalchemy import select
 from src.lib.roles import Role
@@ -19,7 +19,7 @@ login_require = JsonWebToken(config.KEY_JWT, config.ALGORITHM_HASH_TOKEN)
 
 class GetOrderInput(HTTPEndpoint):
 
-    @executor(form_data = Checkout, header_data = Header)
+    @executor(form_data = GetOrder, header_data = Header)
     async def post(self, form_data, header_data):
         data = form_data
         merchant_header = header_data['merchant']

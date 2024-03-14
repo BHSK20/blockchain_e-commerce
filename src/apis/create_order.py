@@ -21,7 +21,6 @@ class CreateOrder(HTTPEndpoint):
 
     @executor(form_data=Checkout)
     async def post(self, form_data):
-        print(1)
         amount = form_data['amount']
         currency = form_data['currency']
         # call api
@@ -36,11 +35,9 @@ class CreateOrder(HTTPEndpoint):
             'merchant': PARTNER_CODE,
             'sign': sign
         }
-        print('ok')
         try:
             response = await requests.post('https://on-shop-blockchain.onrender.com/get_order_input', json=data, headers=headers, timeout=100)
             # response = requests.get("https://scrapingbee.com/",timeout=30)
-            print('2')
             # Check if the request was successful
             if response.status_code == 200:
                 return str(response.content)
