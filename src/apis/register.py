@@ -30,7 +30,7 @@ class Register(HTTPEndpoint):
         form_data['password'] = b_pasword
         # send email notification
         register_token = JsonWebToken(config.KEY_JWT, config.ALGORITHM_HASH_TOKEN)
-        data = json.dumps({'email':form_data['email'], 'name': form_data['name'], 'last_name':form_data['last_name'], 'password': b_pasword.decode('utf-8')})
+        data = json.dumps({'email':form_data['email'], 'name': form_data['name'], 'password': b_pasword.decode('utf-8')})
         temp = register_token.create_token(payload_data=data)
         token = temp.get('token')
         redis.set(form_data['email'], token)
