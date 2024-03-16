@@ -21,11 +21,11 @@ class JsonWebToken(Authorization):
     def create_token(self, payload_data, *arg, **kwargs):
         token  = jwt.encode(payload={
             "payload": payload_data,
-            "exp":datetime.datetime.utcnow() + datetime.timedelta(minutes=15)
+            "exp":datetime.datetime.now() + datetime.timedelta(minutes=30)
         }, key=self.key, algorithm=self.algorithm)
         refresh_token = jwt.encode(payload={
             "payload": payload_data,
-            "exp":datetime.datetime.utcnow() + datetime.timedelta(days=1)
+            "exp":datetime.datetime.now() + datetime.timedelta(minutes=30)
         }, key=self.key, algorithm=self.algorithm)
         return {
             "token": token,
@@ -49,15 +49,19 @@ class JsonWebToken(Authorization):
             raise Forbidden()
 
     def refresh_token(self, refresh_token):
-        try: 
-            _decode = jwt.decode(refresh_token, key=self.key,
-                                    algorithms=self.algorithm)
+        try:
+            _decode = jwt.decode(refresh_token, key=self.key, algorithms=self.algorithm)
             token  = jwt.encode(payload={
                     "payload": _decode.get("payload"),
-                    "exp":datetime.datetime.utcnow() + datetime.timedelta(minutes=30)
+                    "exp":datetime.datetime.now() + datetime.timedelta(minutes=30)
                 }, key=self.key, algorithm=self.algorithm)
             return token
-        except: 
+        except:
             raise Forbidden()
 
-
+    def get_payload(self, token):
+        try:
+            _decode = jwt.decode(token, key=self.key, algorithms=self.algorithm)
+            return _decode.get('payload')
+        except:
+            raise Forbidden()

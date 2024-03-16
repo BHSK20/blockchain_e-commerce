@@ -57,7 +57,6 @@ class Register(HTTPEndpoint):
             values(email = data['email'], name=data['name'], password = data['password'].encode(), role = Role.USER.value)
             )
             await session.commit()
-            await session.close()
             # create wallet
             result = await session.execute(select(Users).filter_by(**{'email' : data['email']}))
             result = result.fetchall()

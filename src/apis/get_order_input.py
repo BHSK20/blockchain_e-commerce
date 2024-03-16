@@ -1,19 +1,15 @@
 from cryptography.hazmat.primitives import hashes
-import json
-import base64
-import secrets
 
-
-from fastapi import Request
 import json
 from starlette.endpoints import HTTPEndpoint
 from src.lib.executor import executor
-from src.connect import session
 from src.schema.checkout import GetOrder
 from src.schema.header import Header
-from sqlalchemy import select
 from src.lib.roles import Role
 from src.config import config
+from src.helper.merchant_register import create_signature, authorize_merchant
+from src.lib.exception import BadRequest
+
 from src.lib.authentication import JsonWebToken
 login_require = JsonWebToken(config.KEY_JWT, config.ALGORITHM_HASH_TOKEN)
 
@@ -24,6 +20,13 @@ class GetOrderInput(HTTPEndpoint):
         data = form_data
         merchant_header = header_data['merchant']
         sign_header = header_data['sign']
+        api_key_header = header_data['api_key']
+        # authorize merchant
+        if not await authorize_merchant(partner_code=merchant_header):
+            return BadRequest('Merchant not found')
+        sign = create_signature(data, api_key_header)
+        if sign != sign_header:
+            return BadRequest('Invalid signature')
         return {
             'data': data,
             'headers': {

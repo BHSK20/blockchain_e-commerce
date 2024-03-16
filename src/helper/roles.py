@@ -1,4 +1,3 @@
-from src.lib.roles import Role
 from src.connect import session
 from sqlalchemy import select
 from src.models.user import Users

@@ -38,7 +38,7 @@ class CreateOrder(HTTPEndpoint):
         }
         try:
             async with aiohttp.ClientSession() as session:
-                async with session.post('https://on-shop-blockchain.onrender.com/get_order_input', json=data, headers=headers, timeout=40) as response:
+                async with session.post('https://on-shop-blockchain.onrender.com/get_order_input', json=data, headers=headers, timeout=60) as response:
                     # Check if the request was successful
                     if response.status == 200:
                         text = await response.json()
