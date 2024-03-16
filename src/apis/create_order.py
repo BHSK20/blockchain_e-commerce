@@ -16,8 +16,8 @@ from src.config import config
 from src.lib.authentication import JsonWebToken
 from src.helper.merchant_register import create_signature
 login_require = JsonWebToken(config.KEY_JWT, config.ALGORITHM_HASH_TOKEN)
-API_KEY = '1asdasd'
-PARTNER_CODE = '123123123'
+API_KEY = 'jG-eyTRJBaz8JRjS78WSpEpM9CKYEsNNTNF1sYh7Q3E='
+PARTNER_CODE = 'c799b631f54dc2867fc049c220a062cb'
 class CreateOrder(HTTPEndpoint):
 
     @executor(form_data=Checkout)
