@@ -8,7 +8,7 @@ from src.models.user import Users
 from sqlalchemy import update, select
 from src.lib.authentication import JsonWebToken
 from src.helper.roles import get_role_by_email
-from src.helper.user_info import get_name_by_email
+from src.helper.user_info import get_name_by_email, get_publickey_by_email
 import json
 login_require = JsonWebToken(config.KEY_JWT, config.ALGORITHM_HASH_TOKEN)
 from src.lib.exception import BadRequest
@@ -48,8 +48,8 @@ class Login(HTTPEndpoint):
 
         role = await get_role_by_email(email)
         name = await get_name_by_email(email)
-        print(role)
-        token = login_require.create_token(payload_data={'email': email, 'role': role, 'name':name })
+        public_key = await get_publickey_by_email(email)
+        token = login_require.create_token(payload_data={'email': email, 'role': role, 'name':name, 'public_key':public_key })
         _token = json.dumps(token)
         redis.set(email, _token)
         return token

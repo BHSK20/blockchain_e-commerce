@@ -7,11 +7,11 @@ from sqlalchemy.dialects.postgresql import JSONB
 class Wallet(db.Model):
     __tablename__ = 'Wallet'
     id = Column(Integer, primary_key=True)
-    userId = Column(Integer, ForeignKey('Users.id'))
+    email = Column(String, ForeignKey('Users.email'))
     merchant = Column(String, nullable=True)
     key = Column(JSONB, nullable=True)
-    created_time = Column(TIMESTAMP, default=datetime.utcnow)
-    updated_time = Column(TIMESTAMP, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_time = Column(TIMESTAMP, default=datetime.now)
+    updated_time = Column(TIMESTAMP, default=datetime.now, onupdate=datetime.now)
 
     def __repr__(self):
         return f'<Wallet {self.userId}>'
