@@ -48,8 +48,8 @@ class Register(HTTPEndpoint):
         str_data = _decode.get('payload')
         data = json.loads(str_data)
         # check if verified
-        if await is_exists_email(data['email']):
-            return 'already verified'
+        # if await is_exists_email(data['email']):
+        #     return 'already verified'
         stored_token = redis.get(data['email']).decode()
         if stored_token == token:
             await session.execute(
@@ -70,6 +70,6 @@ class Register(HTTPEndpoint):
             await session.commit()
             await session.close()
 
-            return "success"
+            return {'public_key': public_key}
         else:
             raise BadRequest(errors="Token does not match")
