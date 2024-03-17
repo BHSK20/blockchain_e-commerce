@@ -24,8 +24,8 @@ class Register(HTTPEndpoint):
 
     @executor(form_data = Register)
     async def post(self,form_data):
-        if await is_exists_email(form_data['email']):
-            raise BadRequest(errors="Email exists")
+        # if await is_exists_email(form_data['email']):
+        #     raise BadRequest(errors="Email exists")
         # store data of user to posgreSQL
         b_pasword = generate_hased_password(form_data['password'])
         form_data['password'] = b_pasword
