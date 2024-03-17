@@ -58,15 +58,9 @@ class Register(HTTPEndpoint):
             )
             await session.commit()
             # create wallet
-            result = await session.execute(select(Users).filter_by(**{'email' : data['email']}))
-            result = result.fetchall()
-            item = result[0]
-            dict_item = item[0].as_dict
-            user_id = dict_item['id']
-            
             public_key, private_key = create_wallet()
             key = {'public_key': public_key, 'private_key': private_key}
-            result = await session.execute(insert(Wallet).values(**{'userId' : user_id, 'key' : key}))
+            result = await session.execute(insert(Wallet).values(**{'email': data['email'],'key' : key}))
             await session.commit()
             await session.close()
 

@@ -10,7 +10,7 @@ login_require = JsonWebToken(config.KEY_JWT, config.ALGORITHM_HASH_TOKEN)
 from src.lib.exception import BadRequest
 class UserPayload(HTTPEndpoint):
     @executor(form_data = GetPayload)
-    def post(self,form_data):
+    def get(self,form_data):
         return login_require.get_payload(token=form_data['token'])
 class MerchantInfo(HTTPEndpoint):
     @executor(query_params=GetMerchantInfo)
