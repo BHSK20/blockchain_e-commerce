@@ -39,6 +39,7 @@ class Login(HTTPEndpoint):
                                 values(is_active = False))
                 await session.commit()
                 await session.close()
+                redis.delete(FAILED_LOGIN_PREFIX + email)
                 raise BadRequest(errors="Maximum login attempts exceeded. Account locked.")
             else:
                 raise BadRequest(errors="Wrong password")
