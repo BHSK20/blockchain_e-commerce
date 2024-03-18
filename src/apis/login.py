@@ -22,16 +22,15 @@ class Login(HTTPEndpoint):
         # check password
         check_pw, user_created =  await check_password(email, form_data['password'])
         if not user_created:
-            raise BadRequest(errors="Please regist an account")
+            raise BadRequest(errors="Please register an account")
         # check if the account is locked
         result = await session.execute(select(Users).filter_by(**{'email' : email}))
+        await session.close()
         result = result.fetchall()
         item = result[0]
         dict_item = item[0].as_dict
         if not dict_item['is_active']:
             raise BadRequest(errors="This account is locked")
-        else:
-            redis.delete(FAILED_LOGIN_PREFIX + email)
         if not check_pw:
             login_attempts = redis.incr(FAILED_LOGIN_PREFIX + email)
             if login_attempts >= MAX_LOGIN_ATTEMPTS:
