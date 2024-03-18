@@ -28,6 +28,7 @@ class MerchantRegister(HTTPEndpoint):
                     city = form_data['city'],
                     address1 = form_data['address1'],
                     address2 = form_data['address2'],
+                    phone = form_data['phone'],
                     partner_code = json_data['partner_code'],
                     api_key = json_data['api_key'])
             )

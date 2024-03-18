@@ -7,3 +7,4 @@ class MerchantRegister(BaseModel):
     city: str
     address1: str
     address2: Optional[str] = None
+    phone: int

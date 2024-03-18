@@ -11,6 +11,7 @@ class Merchants(db.Model):
     city = Column(String, name='city', nullable=True)
     address1 = Column(String, name='address1', nullable=True)
     address2 = Column(String, name='address2', nullable=True)
+    phone = Column(Integer, name='phone', nullable=True)
     partner_code = Column(String, name = 'partner_code', nullable=True)
     api_key = Column(String, name = 'api_key', nullable=True)
     created_at = Column(TIMESTAMP, default=datetime.now)
