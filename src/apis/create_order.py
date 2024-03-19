@@ -16,8 +16,10 @@ from src.config import config
 from src.lib.authentication import JsonWebToken
 from src.helper.merchant_register import create_signature
 login_require = JsonWebToken(config.KEY_JWT, config.ALGORITHM_HASH_TOKEN)
-API_KEY = 'jG-eyTRJBaz8JRjS78WSpEpM9CKYEsNNTNF1sYh7Q3E='
-PARTNER_CODE = 'c799b631f54dc2867fc049c220a062cb'
+API_KEY = 'dbLO7G_Qmm2d7nqN4vV8gkn5zufbkfg876sck0RXPhU='
+PARTNER_CODE = '18b56937c0d72ebd1e978afd15650c70'
+BASE_URL = 'https://on-shop-blockchain.onrender.com'
+BASE_URL_LOCAL = 'http://localhost:5000'
 class CreateOrder(HTTPEndpoint):
 
     @executor(form_data=Checkout)
@@ -39,13 +41,16 @@ class CreateOrder(HTTPEndpoint):
         }
         try:
             async with aiohttp.ClientSession() as session:
-                async with session.post('https://on-shop-blockchain.onrender.com/get_order_input', json=data, headers=headers, timeout=60) as response:
+                async with session.post(f'{BASE_URL_LOCAL}/get_order_input', json=data, headers=headers, timeout=60) as response:
                     # Check if the request was successful
                     if response.status == 200:
                         text = await response.json()
                         return text
+                    elif response.status == 400:
+                        error_message = await response.text()
+                        print(f"Error: Received status code 400 with message: {error_message}")
                     else:
-                        # Handle unsuccessful response
+                        # Handle other unsuccessful response codes
                         print(f"Error: Received status code {response.status}")
                         return None
         except Exception as e:

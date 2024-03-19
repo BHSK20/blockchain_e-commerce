@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 
 class Header(BaseModel):
-    merchant: int
+    merchant: str
     sign: str
     api_key: str
 

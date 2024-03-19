@@ -23,10 +23,10 @@ class GetOrderInput(HTTPEndpoint):
         api_key_header = header_data['api_key']
         # authorize merchant
         if not await authorize_merchant(partner_code=merchant_header):
-            return BadRequest('Merchant not found')
+            raise BadRequest('Merchant not found')
         sign = create_signature(data, api_key_header)
         if sign != sign_header:
-            return BadRequest('Invalid signature')
+            raise BadRequest('Signature not match')
         return {
             'data': data,
             'headers': {
