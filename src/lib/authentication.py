@@ -21,11 +21,11 @@ class JsonWebToken(Authorization):
     def create_token(self, payload_data, *arg, **kwargs):
         token  = jwt.encode(payload={
             "payload": payload_data,
-            "exp":datetime.datetime.now() + datetime.timedelta(minutes=30)
+            "exp":datetime.datetime.now() + datetime.timedelta(days=2)
         }, key=self.key, algorithm=self.algorithm)
         refresh_token = jwt.encode(payload={
             "payload": payload_data,
-            "exp":datetime.datetime.now() + datetime.timedelta(minutes=30)
+            "exp":datetime.datetime.now() + datetime.timedelta(days=2)
         }, key=self.key, algorithm=self.algorithm)
         return {
             "token": token,
