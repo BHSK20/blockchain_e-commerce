@@ -34,7 +34,8 @@ class CreateOrder(HTTPEndpoint):
         headers = {
             "Content-Type": "application/json",
             'merchant': PARTNER_CODE,
-            'sign': sign
+            'sign': sign,
+            'api_key': API_KEY
         }
         try:
             async with aiohttp.ClientSession() as session:
