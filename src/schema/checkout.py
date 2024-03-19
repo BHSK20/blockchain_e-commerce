@@ -1,10 +1,10 @@
 from pydantic import BaseModel
 
 class Checkout(BaseModel):
-    amount: int
+    amount: float
     currency: str
 
 class GetOrder(BaseModel):
-    amount: int
+    amount: float
     currency: str
     order_id: str
