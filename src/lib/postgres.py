@@ -17,7 +17,7 @@ class Model(Base):
 class Postgres:
     def __init__(self, url: str, *args, **kwargs) -> None:
         super(Postgres, self).__init__(*args, ** kwargs)
-        self.engine = create_async_engine(url=url)
+        self.engine = create_async_engine(url=url, pool_pre_ping=True)
         self.session = self._make_session()
         self.Model = Model
 

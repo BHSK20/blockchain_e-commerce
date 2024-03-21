@@ -1,7 +1,7 @@
 from web3 import Web3
 INFURA_API_KEY = '7896f3612eca4491bb7a895198929bac'
 # Khởi tạo đối tượng Web3
-web3 = Web3(Web3.HTTPProvider(f'https://mainnet.infura.io/v3/{INFURA_API_KEY}'))
+web3 = Web3(Web3.HTTPProvider(f'https://sepolia.infura.io/v3/{INFURA_API_KEY}'))
 
 # Địa chỉ hợp đồng
 contract_address = '0x7819188be76a23C04Fa416C6B6708a80418b5f9b'
@@ -11,7 +11,13 @@ contract_abi = [{"inputs":[],"stateMutability":"nonpayable","type":"constructor"
 
 # Khởi tạo đối tượng hợp đồng
 contract = web3.eth.contract(address=contract_address, abi=contract_abi)
+# Check if the contract address is valid
+is_valid_address = web3.is_address(contract.address)
+
+if is_valid_address:
+    print("Contract address is valid")
+else:
+    print("Contract address is not valid")
 result = contract.functions.balanceOf('0xcC5f332e7038B619BAbcAd6125D87Ab376BdDdf6').call()
-# result = contract.functions.balanceOf().call('0xcC5f332e7038B619BAbcAd6125D87Ab376BdDdf6')
 
 print(result)
