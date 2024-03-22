@@ -15,11 +15,17 @@ def register_merchant():
     api_key = generate_api_key()
     return { 'partner_code': partner_code, 'api_key': api_key}
 
+# return merchant_name or none
 async def authorize_merchant(partner_code):
     result = await session.execute(select(Merchants).filter_by(**{'partner_code':partner_code}))
     list = result.fetchall()
     await session.close()
-    return True if (len(list) > 0) else False
+    if len(list):
+        item = list[0]
+        name = item[0].as_dict['merchant_name']
+        return name
+    else:
+        return None
 
 def create_signature(body, api_key):
     message = json.dumps(body) + api_key

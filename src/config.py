@@ -4,7 +4,8 @@ import typing
 class Config(BaseSettings):
     class Config:
         env_file = ".env"
-
+    AD_PUBLIC_KEY: str
+    AD_PRIVATE_KEY: str
     CHAIN_ID: int
     SECRET_KEY: str
     PROJECT_NAME: str = 'blockchain-e-commerce'
