@@ -36,9 +36,10 @@ class GetOrderInput(HTTPEndpoint):
             insert(Orders).
             values(
                 id = form_data['order_id'],
-                order_name = None,
+                order_name = form_data['order_name'],
                 merchant = merchant_name,
                 amount = form_data['amount'],
-                currency = form_data['rrency'],
+                currency = form_data['currency'],
             ))
-        return form_data['order_id']
+        form_data['merchant'] = merchant_name
+        return {'from_data': form_data}

@@ -37,3 +37,14 @@ async def get_publickey_by_email(email):
         return public_key
     else:
         return None
+    
+async def get_privatekey_by_email(email):
+    result = await session.execute(select(Wallet).filter_by(**{'email':email}))
+    list = result.fetchall()
+    await session.close()
+    if len(list):
+        item = list[0]
+        private_key = item[0].as_dict['key']['private_key']
+        return private_key
+    else:
+        return None

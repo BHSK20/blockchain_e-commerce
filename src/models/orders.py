@@ -4,7 +4,7 @@ from datetime import datetime
 
 class Orders(db.Model):
     __tablename__ = 'Orders'
-    id = Column(Integer, primary_key=True)
+    id = Column(String, primary_key=True)
     order_name = Column(String, name='order_name', nullable=True)
     merchant = Column(String, name='merchant', nullable=True)
     amount = Column(Float, name='amount', nullable=True)
