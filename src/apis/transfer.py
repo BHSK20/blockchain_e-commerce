@@ -7,8 +7,10 @@ from src.schema.header import HeaderUserPayload
 from sqlalchemy import select, insert, update
 from src.lib.roles import Role
 from src.config import config
+from src.helper.register import is_exists_email
 from src.helper.user_info import get_publickey_by_email, get_privatekey_by_email
 from src.helper.token_abstract import *
+from src.lib.exception import BadRequest
 import json
 from src.lib.authentication import JsonWebToken
 login_require = JsonWebToken(config.KEY_JWT, config.ALGORITHM_HASH_TOKEN)
@@ -21,6 +23,8 @@ class Transfer(HTTPEndpoint):
         currency = form_data['currency']
         # to address query form database
         to_address = await get_publickey_by_email(form_data['email'])
+        if not await is_exists_email(form_data['email']):
+            raise BadRequest('Email not found')
         from_address = await get_publickey_by_email(user['email'])
         # laod private_key from database
         private_key = await get_privatekey_by_email(user['email'])
