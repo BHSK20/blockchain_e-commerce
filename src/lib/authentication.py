@@ -65,15 +65,3 @@ class JsonWebToken(Authorization):
             return _decode.get('payload')
         except:
             raise Forbidden()
-    def update_payload(self, token, new_payload):
-        try:
-            # Decode the JWT
-            _decode = jwt.decode(token, key=self.key, algorithms=self.algorithm)
-            # Update the payload
-            _decode['payload'].update(new_payload)
-            # Re-encode the JWT
-            updated_token = jwt.encode(payload=_decode, key=self.key, algorithm=self.algorithm)
-            return updated_token
-        except Exception as e:
-            print(e)
-            raise Forbidden()

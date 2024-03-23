@@ -35,8 +35,6 @@ class Transfer(HTTPEndpoint):
         status, amount = status_value_of_transaction(tx_hash)
         # update user's balance
         updated_token = None
-        if status:
-            updated_token = login_require.update_payload(token, {'balance': get_balance_in_ether(from_address)})
         await session.execute(
             insert(Transaction).
             values(
