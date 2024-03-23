@@ -34,7 +34,6 @@ class Transfer(HTTPEndpoint):
         # update database
         status, amount = status_value_of_transaction(tx_hash)
         # update user's balance
-        updated_token = None
         await session.execute(
             insert(Transaction).
             values(
@@ -44,4 +43,4 @@ class Transfer(HTTPEndpoint):
                 status = (status==1)
             ))
         await session.commit()
-        return tx_hash, updated_token
+        return tx_hash
