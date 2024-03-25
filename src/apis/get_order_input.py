@@ -31,15 +31,6 @@ class GetOrderInput(HTTPEndpoint):
         if sign != sign_header:
             raise BadRequest('Signature not match')
 
-        # success case store database
-        await session.execute(
-            insert(Orders).
-            values(
-                id = form_data['order_id'],
-                order_name = form_data['order_name'],
-                merchant = merchant_name,
-                amount = form_data['amount'],
-                currency = form_data['currency'],
-            ))
+
         form_data['merchant'] = merchant_name
         return {'from_data': form_data}
