@@ -5,3 +5,6 @@ class Transfer(BaseModel):
     currency: str
     email: str
     order_data: Optional[dict] = None
+
+class TransferOrder(BaseModel):
+    order_id: int

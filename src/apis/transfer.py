@@ -1,10 +1,10 @@
 from starlette.endpoints import HTTPEndpoint
 from src.lib.executor import executor
-from src.connect import session
+from src.connect import session, redis
 from src.models.transaction import Transaction
-from src.schema.transfer import Transfer
+from src.schema.transfer import Transfer, TransferOrder
 from src.schema.header import HeaderUserPayload
-from sqlalchemy import select, insert, update
+from sqlalchemy import insert
 from src.lib.roles import Role
 from src.config import config
 from src.helper.register import is_exists_email
@@ -18,7 +18,6 @@ login_require = JsonWebToken(config.KEY_JWT, config.ALGORITHM_HASH_TOKEN)
 class Transfer(HTTPEndpoint):
     @executor(form_data=Transfer, login_require=login_require, header_data=HeaderUserPayload)
     async def post(self, form_data, user, header_data):
-        _, token = header_data['authorization'].split(' ')
         amount = form_data['amount']
         currency = form_data['currency']
         # to address query form database
@@ -44,3 +43,11 @@ class Transfer(HTTPEndpoint):
             ))
         await session.commit()
         return tx_hash
+
+class TransferOrder(HTTPEndpoint):
+    @executor(path_params=TransferOrder, login_require=login_require)
+    async def get(self, path_params, user):
+        order_id = path_params['order_id']
+        data = redis.get(order_id)
+        print(data)
+        return json.loads(data)
