@@ -7,4 +7,4 @@ class Transfer(BaseModel):
     order_data: Optional[dict] = None
 
 class TransferOrder(BaseModel):
-    order_id: int
+    order_id: str
