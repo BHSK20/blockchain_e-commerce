@@ -11,7 +11,7 @@ from src.helper.merchant_register import create_signature, authorize_merchant
 from src.lib.exception import BadRequest
 from src.models.orders import Orders
 from sqlalchemy import insert
-from src.connect import session
+from src.connect import session, redis
 from src.lib.authentication import JsonWebToken
 login_require = JsonWebToken(config.KEY_JWT, config.ALGORITHM_HASH_TOKEN)
 
@@ -31,6 +31,8 @@ class GetOrderInput(HTTPEndpoint):
         if sign != sign_header:
             raise BadRequest('Signature not match')
 
-
         form_data['merchant'] = merchant_name
-        return {'from_data': form_data}
+        order_id = form_data['order_id']
+        del form_data['order_id']
+        redis.set(order_id, json.dumps(form_data), db=1)
+        return {'order_id': order_id}
