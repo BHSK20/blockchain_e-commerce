@@ -50,7 +50,7 @@ class TransferOrder(HTTPEndpoint):
     async def get(self, path_params, user):
         order_id = path_params['order_id']
         data = redis.get(order_id)
-        return json.loads(data)
+        return json.loads(data) if data else None
     @executor(path_params=TransferOrder, login_require=login_require)
     async def post(self, path_params, user):
         order_id = path_params['order_id']

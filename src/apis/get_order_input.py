@@ -33,6 +33,7 @@ class GetOrderInput(HTTPEndpoint):
 
         form_data['merchant'] = merchant_name
         order_id = form_data['order_id']
+        print(order_id)
         del form_data['order_id']
         redis.set(order_id, json.dumps(form_data))
-        return {'order_id': order_id}
+        return order_id
