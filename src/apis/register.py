@@ -35,7 +35,7 @@ class Register(HTTPEndpoint):
         temp = register_token.create_token(payload_data=data)
         token = temp.get('token')
         redis.set(form_data['email'], token)
-        message = 'Your account has been create successfully, please click the link to verify your account: {}?token={}'.format(config.BASE_URL_TOKEN,token)
+        message = 'Your account has been create successfully, please click the link to verify your account: {}/{}'.format(config.BASE_URL_TOKEN,token)
         tasks = BackgroundTasks()
         tasks.add_task(send_email, form_data['email'], subject='Verify your account', message=message)
         return JSONResponse('success', background=tasks)
