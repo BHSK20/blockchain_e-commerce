@@ -10,6 +10,7 @@ from src.apis.refresh_token import RefreshToken
 from src.apis.user_info import UserPayload, MerchantInfo
 from src.apis.transfer import Transfer, TransferOrder
 from src.apis.balance import Balance
+from src.apis.order import Orders
 routes = [
     # Route('/', Home),
     Route('/health_check', HealthCheck),
@@ -24,5 +25,7 @@ routes = [
     Route('/merchant', MerchantInfo),
     Route('/transfer', Transfer),
     Route('/transfer/{order_id}', TransferOrder),
-    Route('/balance', Balance)
+    Route('/balance', Balance),
+    Route('/orders', Orders),
+    
 ]
