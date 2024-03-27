@@ -25,7 +25,7 @@ class Transfer(HTTPEndpoint):
         to_address = await get_publickey_by_email(form_data['email'])
         if not await is_exists_email(form_data['email']):
             raise BadRequest('Email not found')
-        from_address = user['public_key']
+        from_address = await get_publickey_by_email(user['email'])
         # laod private_key from database
         private_key = await get_privatekey_by_email(user['email'])
         # transfer
