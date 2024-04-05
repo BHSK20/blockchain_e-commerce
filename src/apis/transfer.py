@@ -73,6 +73,9 @@ class TransferOrder(HTTPEndpoint):
         private_key = await get_privatekey_by_email(user['email'])
         # to address query form database
         to_address = await get_address_by_merchant_name(order['merchant'])
+        # transfer
+        tx_hash = transfer(from_address, private_key, amount, to_address)
+        tx_hash = tx_hash.hex()
         # pending insert db
         await session.execute(
             insert(Transaction).
@@ -84,9 +87,8 @@ class TransferOrder(HTTPEndpoint):
                 status = Status.PENDING.value
             ))
         await session.commit()
-        # transfer
-        tx_hash, _ = transfer(from_address, private_key, amount, to_address)
-        tx_hash = tx_hash.hex()
+        # wait for transaction
+        wait_for_transaction(tx_hash)
         # update database
         status, amount = status_value_of_transaction(tx_hash)
         
