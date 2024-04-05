@@ -43,6 +43,7 @@ class Transfer(HTTPEndpoint):
                 status = Status.PENDING.value
             ))
         await session.commit()
+        await session.close()
         # wait for transaction
         wait_for_transaction(tx_hash)
         # update database after transaction
