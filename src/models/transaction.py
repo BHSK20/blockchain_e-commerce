@@ -9,4 +9,4 @@ class Transaction(db.Model):
     date = Column(TIMESTAMP, name='date', default=datetime.now)
     amount = Column(Float, name='amount', nullable=True)
     currency = Column(String, name='currency', nullable=True)
-    status = Column(BOOLEAN, default=True)
+    status = Column(String, name='status', nullable=True)
