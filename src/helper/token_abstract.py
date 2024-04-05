@@ -30,8 +30,11 @@ def transfer(from_address: str, private_key: str, amount: int, to_address: str):
     signed_txn = web3.eth.account.sign_transaction(transfer_data, private_key=private_key)
     transaction_hash = web3.eth.send_raw_transaction(signed_txn.rawTransaction)
     print('transaction_hash: ', transaction_hash.hex())
-    transaction_receipt = web3.eth.wait_for_transaction_receipt(transaction_hash, timeout=500)
-    return transaction_hash, transaction_receipt
+    return transaction_hash
+
+def wait_for_transaction(tx_hash):
+    transaction_receipt = web3.eth.wait_for_transaction_receipt(tx_hash, timeout=500)
+    return tx_hash, transaction_receipt
 
 def transaction_info(tx_hash):
     return web3.eth.get_transaction(tx_hash)

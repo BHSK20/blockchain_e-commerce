@@ -30,6 +30,9 @@ class Transfer(HTTPEndpoint):
         from_address = await get_publickey_by_email(user['email'])
         # laod private_key from database
         private_key = await get_privatekey_by_email(user['email'])
+        # transfer
+        tx_hash = transfer(from_address,private_key, amount, to_address)
+        tx_hash = tx_hash.hex()
         # pending insert db
         await session.execute(
             insert(Transaction).
@@ -40,10 +43,9 @@ class Transfer(HTTPEndpoint):
                 status = Status.PENDING.value
             ))
         await session.commit()
-        # transfer
-        tx_hash, _ = transfer(from_address,private_key, amount, to_address)
-        tx_hash = tx_hash.hex()
-        # update database
+        # wait for transaction
+        wait_for_transaction(tx_hash)
+        # update database after transaction
         status, amount = status_value_of_transaction(tx_hash)
         # update transaction status
         await session.execute(update(Transaction).where(Transaction.id == tx_hash)
