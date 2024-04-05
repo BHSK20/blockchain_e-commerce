@@ -11,7 +11,7 @@ from src.apis.user_info import UserPayload, MerchantInfo
 from src.apis.transfer import Transfer, TransferOrder
 from src.apis.balance import Balance
 from src.apis.order import OrdersUser, OrdersMerchant
-from src.apis.transfer_log import TransferLog
+from src.apis.transfer_log import TransferLog, TransferOrderLog
 routes = [
     # Route('/', Home),
     Route('/health_check', HealthCheck),
@@ -30,6 +30,6 @@ routes = [
     Route('/orders/user', OrdersUser),
     Route('/orders/merchant', OrdersMerchant),
     Route('/transactions', TransferLog),
-    
+    Route('/transactions/order', TransferOrderLog),
     
 ]

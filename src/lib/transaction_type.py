@@ -1,4 +1,4 @@
 from enum import Enum
 class TransactionType(Enum):
-    TRANSFER = 'TRANSFER'
-    TRANSFER_ORDER = 'TRANSFER ORDER'
+    TRANSFER = 'Transfer'
+    TRANSFER_ORDER = 'Transfer Order'
