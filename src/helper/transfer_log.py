@@ -22,7 +22,9 @@ async def get_transfer_order_log():
     list = result.fetchall()
     await session.close()
     if len(list):
+        # ignore type column
         transactions = [item[0].as_dict for item in list]
+        del transactions['type']
         for transaction in transactions:
             transaction['date'] = str(transaction['date']) # Convert datetime to string
         return transactions
