@@ -86,6 +86,7 @@ class TransferOrder(HTTPEndpoint):
                 values(
                     id = order_id,
                     order_name = order['order_name'],
+                    user = user['email'],
                     merchant = order['merchant'],
                     amount = amount,
                     currency = currency

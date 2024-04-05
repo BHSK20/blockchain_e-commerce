@@ -15,6 +15,17 @@ async def get_name_by_email(email):
     else:
         return None
 
+async def get_merchant_name_by_email(email):
+    result = await session.execute(select(Merchants).filter_by(**{'merchant_email':email}))
+    list = result.fetchall()
+    await session.close()
+    if len(list):
+        item = list[0]
+        name = item[0].as_dict['name']
+        return name
+    else:
+        return None
+    
 async def get_merchant_info_by_email(email):
     result = await session.execute(select(Merchants).filter_by(**{'merchant_email':email}))
     list = result.fetchall()

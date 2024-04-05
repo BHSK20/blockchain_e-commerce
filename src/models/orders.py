@@ -6,6 +6,7 @@ class Orders(db.Model):
     __tablename__ = 'Orders'
     id = Column(String, primary_key=True)
     order_name = Column(String, name='order_name', nullable=True)
+    user = Column(String, name='user', nullable=True)
     merchant = Column(String, name='merchant', nullable=True)
     amount = Column(Float, name='amount', nullable=True)
     currency = Column(String, name='currency', nullable=True)
