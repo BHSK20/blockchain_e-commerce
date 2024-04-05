@@ -12,6 +12,7 @@ from src.helper.register import is_exists_email
 from src.helper.user_info import get_publickey_by_email, get_privatekey_by_email, get_address_by_merchant_name
 from src.helper.token_abstract import *
 from src.lib.exception import BadRequest
+from src.lib.transaction_type import TransactionType
 import json
 from src.lib.authentication import JsonWebToken
 login_require = JsonWebToken(config.KEY_JWT, config.ALGORITHM_HASH_TOKEN)
@@ -75,6 +76,7 @@ class TransferOrder(HTTPEndpoint):
             values(
                 id = tx_hash,
                 amount = amount,
+                type = TransactionType.TRANSFER_ORDER.value,
                 currency = currency,
                 status = (status==1)
             ))
