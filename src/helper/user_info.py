@@ -21,7 +21,7 @@ async def get_merchant_name_by_email(email):
     await session.close()
     if len(list):
         item = list[0]
-        name = item[0].as_dict['name']
+        name = item[0].as_dict['merchant_name']
         return name
     else:
         return None
