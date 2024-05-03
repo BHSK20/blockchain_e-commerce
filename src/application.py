@@ -10,7 +10,6 @@ import logging
 class Application(FastAPI):
     def __init__(self, *args, **kwargs ) -> None:
         super().__init__(*args, **kwargs)
-
         async def exc_method_not_allow(request: Request, exc: HTTPException):
             return Response(
                 content=json.dumps({
