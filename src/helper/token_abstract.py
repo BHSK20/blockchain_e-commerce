@@ -25,7 +25,9 @@ def checkBalance(address, amount):
 def transfer(from_address: str, private_key: str, amount: int, to_address: str):
     nonce = web3.eth.get_transaction_count(from_address, 'latest')
     print(nonce)
-    build_dict = {'from': from_address, 'nonce': nonce, 'gas': 4000000, 'gasPrice': web3.to_wei('50', 'gwei')}
+    gas_price = web3.eth.gas_price
+    print(gas_price)
+    build_dict = {'from': from_address, 'nonce': nonce, 'gas': 4000000, 'gasPrice': gas_price}
     transfer_data = contract.functions.transfer(to_address, web3.to_wei(amount, 'ether')).build_transaction(build_dict)
     signed_txn = web3.eth.account.sign_transaction(transfer_data, private_key=private_key)
     transaction_hash = web3.eth.send_raw_transaction(signed_txn.rawTransaction)
@@ -33,7 +35,7 @@ def transfer(from_address: str, private_key: str, amount: int, to_address: str):
     return transaction_hash
 
 def wait_for_transaction(tx_hash):
-    transaction_receipt = web3.eth.wait_for_transaction_receipt(tx_hash, timeout=500)
+    transaction_receipt = web3.eth.wait_for_transaction_receipt(tx_hash, timeout=200)
     return tx_hash, transaction_receipt
 
 def transaction_info(tx_hash):
