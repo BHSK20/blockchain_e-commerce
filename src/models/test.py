@@ -1,5 +1,7 @@
 from src.connect import db
-from sqlalchemy import Column, Integer, Sequence, String
+from sqlalchemy import Column, Integer, Sequence, String, TIMESTAMP
+from datetime import datetime
+from zoneinfo import ZoneInfo
 
 class Test(db.Model):
     __tablename__ = 'test'
@@ -8,3 +10,5 @@ class Test(db.Model):
     
     name = Column(String, name='name', nullable=True)
     password = Column(String, name='password', nullable=True)
+    date = Column(TIMESTAMP(timezone=True), name='date', default=datetime.now(ZoneInfo('Asia/Ho_Chi_Minh')))
+    
