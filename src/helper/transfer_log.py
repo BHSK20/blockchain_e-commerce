@@ -6,7 +6,7 @@ from src.lib.transaction_type import TransactionType
 from datetime import datetime
 
 async def get_transfer_log():
-    result = await session.execute(select(Transaction).filter_by(**{'type':TransactionType.TRANSFER.value}))
+    result = await session.execute(select(Transaction))
     list = result.fetchall()
     await session.close()
     if len(list):
