@@ -7,8 +7,7 @@ from src.connect import session
 from src.models.user import Users
 from sqlalchemy import update, select
 from src.lib.authentication import JsonWebToken
-from src.helper.roles import get_role_by_email
-from src.helper.user_info import get_name_by_email, get_publickey_by_email
+from src.helper.user_info import get_name_role_public_key
 from src.helper.token_abstract import get_balance_in_ether
 import json
 login_require = JsonWebToken(config.KEY_JWT, config.ALGORITHM_HASH_TOKEN)
@@ -46,11 +45,11 @@ class Login(HTTPEndpoint):
                 raise BadRequest(errors="Wrong password")
         # login success
         redis.delete(FAILED_LOGIN_PREFIX + email)
-
-        role = await get_role_by_email(email)
-        name = await get_name_by_email(email)
-        public_key = await get_publickey_by_email(email)
+        dict_data = await get_name_role_public_key(email)
+        role = dict_data['role']
+        name = dict_data['name']
+        public_key = dict_data['key']['public_key']
         token = login_require.create_token(payload_data={'email': email, 'role': role, 'name':name, 'public_key':public_key, 'balance':  get_balance_in_ether(public_key)})
         _token = json.dumps(token)
         redis.set(email, _token)
-        return token
+        return 'token'

@@ -3,6 +3,7 @@ from sqlalchemy import select, join
 from src.models.merchant import Merchants
 from src.models.user import Users
 from src.models.wallet import Wallet
+from sqlalchemy.orm import joinedload
 
 async def get_name_by_email(email):
     result = await session.execute(select(Users).filter_by(**{'email':email}))
@@ -47,6 +48,18 @@ async def get_address_by_merchant_name(merchant_name):
         item = list[0]
         public_key = item[0].as_dict['key']['public_key']
         return public_key
+    else:
+        return None
+async def get_name_role_public_key(email):
+    join_statement = join(Wallet, Users, Wallet.email == Users.email)
+    result = await session.execute(select(Users, Wallet).select_from(join_statement).filter(Wallet.email == email))
+    list = result.fetchall()
+    await session.close()
+    if len(list):
+        item = list[0]
+        user_data = item[0].as_dict
+        wallet_data = item[1].as_dict
+        return {**user_data, **wallet_data}
     else:
         return None
     
