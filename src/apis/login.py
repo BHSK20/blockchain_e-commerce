@@ -52,4 +52,4 @@ class Login(HTTPEndpoint):
         token = login_require.create_token(payload_data={'email': email, 'role': role, 'name':name, 'public_key':public_key, 'balance':  get_balance_in_ether(public_key)})
         _token = json.dumps(token)
         redis.set(email, _token)
-        return 'token'
+        return token
