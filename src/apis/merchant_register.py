@@ -32,7 +32,8 @@ class MerchantRegister(HTTPEndpoint):
                     partner_code = json_data['partner_code'],
                     api_key = json_data['api_key'])
             )
-        
+        await session.commit()
+        await session.close()
         # update user role
         await session.execute(update(Users).
                                 where(Users.email == user['email']).
