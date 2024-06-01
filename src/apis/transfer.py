@@ -20,7 +20,7 @@ login_require = JsonWebToken(config.KEY_JWT, config.ALGORITHM_HASH_TOKEN)
 
 class Transfer(HTTPEndpoint):
     @executor(form_data=Transfer, login_require=login_require)
-    async def post(self, form_data, user, header_data):
+    async def post(self, form_data, user):
         amount = form_data['amount']
         currency = form_data['currency']
         # to address query form database
