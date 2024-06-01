@@ -19,7 +19,7 @@ from src.lib.authentication import JsonWebToken
 login_require = JsonWebToken(config.KEY_JWT, config.ALGORITHM_HASH_TOKEN)
 
 class Transfer(HTTPEndpoint):
-    @executor(form_data=Transfer, login_require=login_require, header_data=HeaderUserPayload)
+    @executor(form_data=Transfer, login_require=login_require)
     async def post(self, form_data, user, header_data):
         amount = form_data['amount']
         currency = form_data['currency']
@@ -38,6 +38,7 @@ class Transfer(HTTPEndpoint):
             insert(Transaction).
             values(
                 id = tx_hash,
+                from_address = user['public_key'],
                 amount = amount,
                 currency = currency,
                 status = Status.PENDING.value
@@ -82,6 +83,7 @@ class TransferOrder(HTTPEndpoint):
             insert(Transaction).
             values(
                 id = tx_hash,
+                from_address = from_address,
                 amount = amount,
                 type = TransactionType.TRANSFER_ORDER.value,
                 currency = currency,

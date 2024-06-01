@@ -5,8 +5,8 @@ import json
 from src.lib.transaction_type import TransactionType
 from datetime import datetime
 
-async def get_transfer_log():
-    result = await session.execute(select(Transaction))
+async def get_transfer_log(from_address):
+    result = await session.execute(select(Transaction).filter_by(**{'from_address':from_address}))
     list = result.fetchall()
     await session.close()
     if len(list):

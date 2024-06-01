@@ -16,7 +16,7 @@ async def get_orders_user(email):
         return orders
     else:
         return None
-    
+
 async def get_orders_merchant(email):
     merchant_name = await get_merchant_name_by_email(email)
     result = await session.execute(select(Orders).filter_by(**{'merchant':merchant_name}))

@@ -19,7 +19,7 @@ Create and activate virtual environment
 
 ```bash
 virtualenv venv
-sourve venv/bin/activate
+source venv/bin/activate
 ```
 
 Install requirements

@@ -31,6 +31,7 @@ class Deposit(HTTPEndpoint):
             insert(Transaction).
             values(
                 id = tx_hash,
+                from_address = user['public_key'],
                 type = 'Deposit',
                 amount = amount,
                 currency = currency,

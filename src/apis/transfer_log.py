@@ -9,7 +9,7 @@ login_require = JsonWebToken(config.KEY_JWT, config.ALGORITHM_HASH_TOKEN)
 class TransferLog(HTTPEndpoint):
     @executor(login_require=login_require)
     async def get(self, user):
-        res = await get_transfer_log()
+        res = await get_transfer_log(user['public_key'])
         return res
 
 class TransferOrderLog(HTTPEndpoint):
