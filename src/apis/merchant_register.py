@@ -13,7 +13,8 @@ login_require = JsonWebToken(config.KEY_JWT, config.ALGORITHM_HASH_TOKEN)
 
 class MerchantRegister(HTTPEndpoint):
 
-    @executor(form_data=MerchantRegister, login_require=login_require, allow_roles=[Role.USER.value])
+    @executor(form_data=MerchantRegister, login_require=login_require)
+    # allow_roles=[Role.USER.value]
     async def post(self, form_data, user):
         # register
         json_data = register_merchant()
