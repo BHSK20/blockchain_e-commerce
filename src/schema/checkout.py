@@ -8,4 +8,5 @@ class GetOrder(BaseModel):
     order_name: str
     amount: float
     currency: str
+    image: str
     order_id: str
