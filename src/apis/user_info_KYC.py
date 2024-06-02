@@ -36,7 +36,7 @@ class UserInfoKYC(HTTPEndpoint):
             raise BadRequest('Please update user info first')
         # compare
         if json_data != form_data.json():
-            return {'status': 'success'}
+            return {'status': 'fail'}
         form_data['email'] = user['email'],
         await session.execute(
             insert(UsersInfo).
