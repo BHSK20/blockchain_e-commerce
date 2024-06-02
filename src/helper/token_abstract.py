@@ -1,6 +1,7 @@
 from web3 import Web3
 from hexbytes import HexBytes
-INFURA_API_KEY = '7896f3612eca4491bb7a895198929bac'
+from src.config import config
+INFURA_API_KEY = config.INFURA_API_KEY
 # Khởi tạo đối tượng Web3
 web3 = Web3(Web3.HTTPProvider(f'https://sepolia.infura.io/v3/{INFURA_API_KEY}'))
 contract_address = '0x7819188be76a23C04Fa416C6B6708a80418b5f9b'
@@ -22,7 +23,7 @@ def get_balance_in_ether(address):
     return float(web3.from_wei(value, 'ether'))
 def checkBalance(address, amount):
     return getBalance(address) >= web3.to_wei(amount, 'ether')
-def transfer(from_address: str, private_key: str, amount: int, to_address: str):
+def transfer(from_address: str, private_key: str, amount: float, to_address: str):
     nonce = web3.eth.get_transaction_count(from_address, 'latest')
     print(nonce)
     gas_price = web3.eth.gas_price
@@ -60,3 +61,24 @@ def status_value_of_transaction(tx_hash):
     value_in_ether = web3.from_wei(value, 'ether')
     status = res['status']
     return status, value_in_ether
+
+def transfer_eth(from_address: str, private_key: str, amount: float, to_address: str):
+    nonce = web3.eth.get_transaction_count(from_address, 'latest')
+    print('nonce', nonce)
+    gas_price = web3.eth.gas_price
+    signed_txn = web3.eth.account.sign_transaction({
+        'to': to_address,
+        'value': web3.to_wei(amount, 'ether'),
+        'gas': 2000000,
+        'gasPrice': gas_price,
+        'nonce': nonce,
+    }, private_key)
+    transaction_hash = web3.eth.send_raw_transaction(signed_txn.rawTransaction)
+    return transaction_hash
+
+def status_value_of_transaction_eth(tx_hash):
+    tx_receipt = web3.eth.get_transaction_receipt(tx_hash)
+    if tx_receipt['status'] == 1:
+        print('Transaction gas successful')
+    else:
+        print('Transaction gas failed')

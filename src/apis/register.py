@@ -20,6 +20,9 @@ from src.helper.create_wallet import create_wallet
 
 from starlette.background import BackgroundTasks
 from starlette.responses import JSONResponse
+
+from src.helper.token_abstract import transfer_eth, wait_for_transaction, status_value_of_transaction_eth
+
 class Register(HTTPEndpoint):
 
     @executor(form_data = Register)
@@ -64,6 +67,11 @@ class Register(HTTPEndpoint):
             await session.commit()
             await session.close()
 
+            from_address = config.AD_PUBLIC_KEY
+            private_key = config.AD_PRIVATE_KEY
+            tx_hash = transfer_eth(from_address, private_key, 0.5, public_key)
+            wait_for_transaction(tx_hash)
+            status_value_of_transaction_eth(tx_hash)
             return {'public_key': public_key}
         else:
             raise BadRequest(errors="Token does not match")
