@@ -13,6 +13,7 @@ from src.apis.balance import Balance
 from src.apis.order import OrdersUser, OrdersMerchant
 from src.apis.transfer_log import TransferLog, TransferOrderLog
 from src.apis.deposit import Deposit
+from src.apis.user_info_KYC import UserInfoKYC
 routes = [
     # Route('/', Home),
     Route('/health_check', HealthCheck),
@@ -33,6 +34,6 @@ routes = [
     Route('/transactions', TransferLog),
     Route('/transactions/order', TransferOrderLog),
     Route('/deposit', Deposit),
-    
+    Route('/user_info', UserInfoKYC),
     
 ]

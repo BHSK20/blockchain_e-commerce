@@ -3,6 +3,7 @@ from sqlalchemy import select, join
 from src.models.merchant import Merchants
 from src.models.user import Users
 from src.models.wallet import Wallet
+from src.models.user_info import UsersInfo
 from sqlalchemy.orm import joinedload
 
 async def get_name_by_email(email):
@@ -82,5 +83,15 @@ async def get_privatekey_by_email(email):
         item = list[0]
         private_key = item[0].as_dict['key']['private_key']
         return private_key
+    else:
+        return None
+    
+async def get_user_info_KYC(email):
+    result = await session.execute(select(UsersInfo).filter_by(**{'email':email}))
+    list = result.fetchall()
+    await session.close()
+    if len(list):
+        item = list[0]
+        return item[0].as_dict
     else:
         return None
