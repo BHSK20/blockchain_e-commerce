@@ -25,15 +25,22 @@ class UserInfoKYC(HTTPEndpoint):
     @executor(login_require=login_require, form_data=UpdateUserInfo)
     async def post(self, user, form_data):
         form_data['email'] = user['email']
+        gender = form_data['gender']
+        # Convert to boolean
+        form_data['gender'] = gender.lower() == 'female'
         redis.set("KYC_{}".format(form_data['email']), json.dumps(form_data))
         return form_data
-    
+
     @executor(login_require=login_require, form_data=UpdateUserInfo)
     async def put(self, user, form_data):
         data = redis.get("KYC_{}".format(user['email']))
         json_data = json.loads(data) if data else None
         if not json_data:
             raise BadRequest('Please update user info first')
+
+        gender = form_data['gender']
+        # Convert to boolean
+        form_data['gender'] = gender.lower() == 'female'
         # compare
         if json_data != form_data.json():
             return {'status': 'fail'}

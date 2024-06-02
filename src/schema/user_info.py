@@ -12,4 +12,4 @@ class UpdateUserInfo(BaseModel):
     card_number: int
     date_of_birth: date
     nationality: str
-    gender: bool # True if female
+    gender: str # True if female
